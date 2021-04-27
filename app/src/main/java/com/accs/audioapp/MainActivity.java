@@ -10,12 +10,17 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,11 +63,7 @@ public class MainActivity extends AppCompatActivity {
             playButton.setEnabled(false);
         }
 
-        audioFilePath_Internal = this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).
-                getAbsolutePath() +"/myaudio.3gp";
 
-        audioFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).
-                getAbsolutePath()+"/myaudio3.mp3";
         
 
         requestPermission(Manifest.permission.RECORD_AUDIO, RECORD_REQUEST_CODE);
@@ -105,6 +106,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void recordAudio(View view){
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy_HHmmss", Locale.getDefault());
+        String dateTime = sdf.format(new Date());
+        audioFilePath_Internal = this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).
+                getAbsolutePath() +"/myaudio";
+
+        audioFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).
+                getAbsolutePath()+"/myaudio";
+        audioFilePath_Internal = audioFilePath_Internal + dateTime + ".3gp";
+        audioFilePath = audioFilePath + dateTime + ".mp3";
+
+
         isRecording = true;
         stopButton.setEnabled(true);
         playButton.setEnabled(false);
